@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -73,7 +74,17 @@ public class Practice14FlipboardView extends View {
         int y = centerY - bitmapHeight / 2;
 
         canvas.save();
+        RectF rectF = new RectF(0, 0, x + bitmapWidth, centerY);
+        canvas.clipRect(rectF);
+        canvas.drawBitmap(bitmap, x, y, paint);
+        canvas.restore();
 
+        canvas.save();
+        if (degree > 90) {
+            canvas.clipRect(new RectF(0, 0, x + bitmapWidth, centerY));
+        } else {
+            canvas.clipRect(new RectF(0, centerY, getWidth(), getHeight()));
+        }
         camera.save();
         camera.rotateX(degree);
         canvas.translate(centerX, centerY);
